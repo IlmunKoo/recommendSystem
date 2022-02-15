@@ -1,0 +1,61 @@
+<script type="text/javascript">
+
+    function scrollfunc(){
+        var scrollHeight= pageYOffset+window,innerHeight;
+        var documentHeght = document.body.scrollHeght;
+
+        if (scrollHeight>=documentHeght){
+            var page= document.querySelector('#page').value;
+
+            var end_page= {{ posts.paginator.num_pages }};
+
+            console.log(pageYOffset)
+            if (page>end_page) {
+                return;
+            }
+
+            document.querySelector('#page').value=parseInt(page)+1;
+            callMorePostAjax(page);
+
+            window.print()
+
+        }
+    }
+
+    function callMorePostAjax(page) {
+        var end_page= {{ posts.paginator.num_pages }};
+        if (page>end_page) {
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'post:post-list' %}",
+            data: {
+                'page':page,
+                'csrfmiddlewaretoken': {{ {% csrf_token %} }}
+            },
+            dataType: 'json',
+            success: (result) => {
+                console.log(`success : ${result}`);
+            },
+            error: (xhr, ajaxSettings, thrownError) => {
+                console.log(`error : ${thrownError}`);
+            },
+            addMorePostAjax,
+        });
+    }
+
+    function addMorePostAjax(data, textStatus, jqXHR) {
+        let post=document.querySelector('#post_list_ajax');
+        post.insertAdjacentHTML("beforeend",data);
+    }
+
+
+
+
+    window.addEventListener('scroll', scrollfunc);
+
+
+</script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="js/main.js"></script>

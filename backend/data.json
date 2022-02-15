@@ -1,0 +1,102 @@
+[
+{
+    "model": "testproject.testdata",
+    "pk": 13,
+    "fields": {
+        "views_cnt": 10,
+        "text_length": 4,
+        "image_cnt": 1,
+        "image": "images/U6K5VNPR4JKFYLC4E6B3NUE3UE.jpeg"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 14,
+    "fields": {
+        "views_cnt": 155,
+        "text_length": 12,
+        "image_cnt": 1,
+        "image": "images/newscj_천지일보_2021_1_16_125855_863388.jpeg"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 15,
+    "fields": {
+        "views_cnt": 53,
+        "text_length": 32,
+        "image_cnt": 1,
+        "image": "images/mb_1621313765600811.jpeg"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 16,
+    "fields": {
+        "views_cnt": 233,
+        "text_length": 2,
+        "image_cnt": 1,
+        "image": "images/img_20201013151258_9a055e9f.webp"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 17,
+    "fields": {
+        "views_cnt": 2323,
+        "text_length": 23,
+        "image_cnt": 1,
+        "image": "images/IMG_5457.jpeg"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 18,
+    "fields": {
+        "views_cnt": 3227,
+        "text_length": 23,
+        "image_cnt": 1,
+        "image": "images/image_readtop_2020_976926_16007414694365572.jpeg"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 19,
+    "fields": {
+        "views_cnt": 2323,
+        "text_length": 23,
+        "image_cnt": 1,
+        "image": "images/BF.28203953.1.jpg"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 20,
+    "fields": {
+        "views_cnt": 323,
+        "text_length": 32,
+        "image_cnt": 1,
+        "image": "images/다운로드.jpeg"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 21,
+    "fields": {
+        "views_cnt": 23,
+        "text_length": 234,
+        "image_cnt": 1,
+        "image": "images/2020020415433340110_1580798613.jpeg"
+    }
+},
+{
+    "model": "testproject.testdata",
+    "pk": 22,
+    "fields": {
+        "views_cnt": 23,
+        "text_length": 45,
+        "image_cnt": 1,
+        "image": "images/50ec5d8c-74c6-45d3-86ce-e38f4d41d61d.jpeg"
+    }
+}
+]

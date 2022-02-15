@@ -1,0 +1,59 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>로그인 / 회원가입</title>
+        <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+    </head>
+    <body>
+      <p style="text-align:center; margin-top:50;"><img src="{% static 'images/logo.png' %}" alt="프로필이미지" width=300/></p>
+        <div class="wrap">
+            <div class="form-wrap">
+                <div class="button-wrap">
+                    <div id="btn"></div>
+                    <button type="button" class="togglebtn" onclick="login()">LOG IN</button>
+                    <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
+                </div>
+                <div class="social-icons">
+                    <img src="{% static 'images/fb.png' %}" alt="facebook">
+                    <img src="{% static 'images/tw.png' %}" alt="twitter">
+                    <img src="{% static 'images/gl.png' %}" alt="google">
+                </div>
+                <form id="login" action="" class="input-group" action="{% url 'account:signup' %}" method="POST">
+                  {% csrf_token %}
+                    <input type="email" class="input-field" placeholder="Your Email" name=email required>
+                    <input type="password" class="input-field" placeholder="Enter Password" name=password required>
+                    <input type="checkbox" class="checkbox"><span>Remember Password</span>
+                    <button class="submit">Login</button>
+                </form>
+
+                
+                <form id="register" action="" class="input-group" action="{% url 'account:signup' %}" method="POST">
+                  {% csrf_token %}
+                    <input type="email" class="input-field" placeholder="Your Email" name=email required>
+                    <input type="password" class="input-field" placeholder="Enter Password" name=password required>
+                    <input type="checkbox" class="checkbox"><span>Terms and conditions</span>
+                    <button class="submit">REGISTER</button>
+                </form>
+            </div>
+        </div>
+        <script>
+            var x = document.getElementById("login");
+            var y = document.getElementById("register");
+            var z = document.getElementById("btn");
+            
+            
+            function login(){
+                x.style.left = "50px";
+                y.style.left = "450px";
+                z.style.left = "0";
+            }
+
+            function register(){
+                x.style.left = "-400px";
+                y.style.left = "50px";
+                z.style.left = "110px";
+            }
+        </script>
+    </body>
+</html>
