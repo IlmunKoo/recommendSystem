@@ -31,7 +31,6 @@ def post_list(request):
     comment_list=Comment.objects.all()
 
     for post in post_list:
-        print(post.views_cnt, post.impressions_cnt)
         score=beta.rvs(abs(post.views_cnt), abs(post.impressions_cnt))
         post.importance = score
         post.save()
