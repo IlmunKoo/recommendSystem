@@ -118,8 +118,10 @@ def click(request, id):
     data=get_object_or_404(testData, pk = id)
     data.views_cnt+=1
     data.save()
+
+    comment_list=Comment.objects.all()
    
-    return render(request, 'click.html',{"data":data})
+    return render(request, 'click.html',{"data":data, 'comments':comment_list})
 
 @login_required(login_url='common:login')
 def comment_create(request, id):
