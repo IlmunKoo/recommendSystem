@@ -40,8 +40,8 @@ class Command(BaseCommand):
 
         # 알파, 베타값의 배열 초기화 
         for _ in range(rounds):
-            for i, a in enumerate(arms):  # 랜덤추출 
-                value = np.random.binomial(1, a, rounds) # arms의 확률대로 초기화:  0 or 1
+            value = np.random.choice(2, len(arms), arms) # 매 라운드마다 확률에 따라  0 or 1 값 다시 생성 
+            for i in range(len(value)):  # 랜덤추출 
                 print(f" idx : {i}")
                 if value[i] == 1: 
                     self.ones[i] += 1

@@ -19,44 +19,44 @@ from .forms import CommentForm
 startT=0
 detail_page_id=0
 
-def __init__(self):
-    print("init starts")
-      # '0' as a reward from each ad
-    ones = [] # '1' as a reward from each ad
-    zeros = []
-    # 데이터 랜덤추출 
-    seed = 12
-    random.seed(seed)
-    rng = RandomState(seed)
-    np.random.seed(seed)
+# def __init__(self):
+#     print("init starts")
+#       # '0' as a reward from each ad
+#     ones = [] # '1' as a reward from each ad
+#     zeros = []
+#     # 데이터 랜덤추출 
+#     seed = 12
+#     random.seed(seed)
+#     rng = RandomState(seed)
+#     np.random.seed(seed)
 
-    # Total posts
-    total_arms  = 10
+#     # Total posts
+#     total_arms  = 10
 
-    # probs of posts : 각 게시물이 선택될 확률
-    arms = [random.betavariate(1.4, 5.4) for i in range(total_arms)] 
+#     # probs of posts : 각 게시물이 선택될 확률
+#     arms = [random.betavariate(1.4, 5.4) for i in range(total_arms)] 
   
-    # Rouns test
-    rounds  = 100
-    clicks = []
+#     # Rouns test
+#     rounds  = 100
+#     clicks = []
 
-    # 알파, 베타값의 배열 초기화 
-    for _ in range(rounds):
-        for i, a in enumerate(arms):  # 랜덤추출 
-            value = np.random.binomial(1, a, rounds) # arms의 확률대로 초기화:  0 or 1 
-            if value == 1: 
-                self.ones[i] += 1
-            else:
-                self.zeros[i]+= 1
+#     # 알파, 베타값의 배열 초기화 
+#     for _ in range(rounds):
+#         for i, a in enumerate(arms):  # 랜덤추출 
+#             value = np.random.binomial(1, a, rounds) # arms의 확률대로 초기화:  0 or 1 
+#             if value == 1: 
+#                 self.ones[i] += 1
+#             else:
+#                 self.zeros[i]+= 1
     
-    post_list=testData.objects.all()
+#     post_list=testData.objects.all()
 
-    for i, post in enumerate(post_list):
-        post.views_cnt =  ones[i]
-        print(f"views_cnt : {post.views_cnt}")
-        post.impressions_cnt=  zeros[i]
-        post.save()
-    print("init ends")
+#     for i, post in enumerate(post_list):
+#         post.views_cnt =  ones[i]
+#         print(f"views_cnt : {post.views_cnt}")
+#         post.impressions_cnt=  zeros[i]
+#         post.save()
+#     print("init ends")
 
         
 def post_list(request):
@@ -69,6 +69,7 @@ def post_list(request):
     comment_list=Comment.objects.all()
 
     for post in post_list:
+        print(post.views_cnt, post.impressions_cnt)
         score=beta.rvs(post.views_cnt, post.impressions_cnt)
         post.importance = score
         post.save()
