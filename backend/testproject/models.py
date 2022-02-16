@@ -2,6 +2,7 @@ from django.db import models
 from account.models import User
 # Create your models here.
 class testData(models.Model):
+    #순수 게시물 관련 데이터
     id= models.AutoField(primary_key=True, null=False, blank=False)
     image=models.ImageField(upload_to="images",null=True, blank=True)#이미지
     user= models.ForeignKey(User, 
@@ -10,7 +11,6 @@ class testData(models.Model):
         verbose_name="테스트 데이터",
         null=True,
     )
-
 
     #알고리즘에 영향을 주는 요소
     views_cnt=models.IntegerField(null=True,blank=True)#조회수  

@@ -123,6 +123,14 @@ def click(request, id):
    
     return render(request, 'click.html',{"data":data, 'comments':comment_list})
 
+def like(request, id):
+
+    data=get_object_or_404(testData, pk = id)
+    data.like+=1
+    data.save()
+   
+    return redirect('testproject:post_list')
+
 @login_required(login_url='common:login')
 def comment_create(request, id):
 
@@ -134,8 +142,9 @@ def comment_create(request, id):
             comment.author = request.user
             comment.post = post
             comment.save()
-            return redirect('testproject:post_list')
-    return redirect('testproject:post_list')
+
+            return redirect('testproject:click',id=id)
+    redirect('testproject:post_list')
 
 import numpy as np
 import pandas as pd
