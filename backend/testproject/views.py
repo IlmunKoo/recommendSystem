@@ -100,9 +100,10 @@ def like(request, id):
 
 @login_required(login_url='account:login')
 def comment_create(request, id):
+    detail_id=id
 
     post = get_object_or_404(testData, pk=id)
-    comments= Comment.objects.all()
+    
 
     if request.method == "POST":
         form = CommentForm(request.POST)
@@ -112,7 +113,9 @@ def comment_create(request, id):
             comment.post = post
             comment.save()
 
-            return redirect('testproject:click',{'id':id,'comments':comments})
+            comment_list= Comment.objects.all()
+
+            return redirect('testproject:click',id=detail_id)
     return redirect('testproject:post_list')
 
 import numpy as np
