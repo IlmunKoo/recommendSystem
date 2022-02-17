@@ -45,8 +45,6 @@ def post_list(request):
         posts=paginator.get_page(page_num)
 
         for post in posts:
-            if post.impressions_cnt <0:
-                post.impressions_cnt = abs(post.impressions_cnt)
             post.impressions_cnt+=1
             post.save()
 
@@ -80,8 +78,6 @@ def click(request, id):
     detail_page_id=id
 
     data=get_object_or_404(testData, pk = id)
-    if data.views_cnt < 0:
-         data.views_cnt = abs(data.views_cnt)
     data.views_cnt+=1
     data.save()
 
