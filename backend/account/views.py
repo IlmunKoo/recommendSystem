@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib import auth
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
 from account import forms
 from  django.views.generic import FormView
@@ -17,7 +18,8 @@ class LoginView(FormView):
             if user is not None:
                   login(self.request, user)
                   return redirect('testproject:post_list')
-            return super().form_vaild(form)
+            return redirect('account:signup')
+
 
 class SignUpView(FormView):
       template_name="signup.html"
@@ -30,4 +32,17 @@ class SignUpView(FormView):
             user=authenticate(self.request, username=email,password=password)
             if user is not None:
                   login(self.request, user)
-            super(SignUpView,self).form_valid(form)
+            return redirect('account:signup')
+
+# def signup_view(request):
+#       if request.method == 'POST':
+#             form = forms.SignUpform(request.POST) 
+#             if form.is_valid():
+#                   user = form.save()
+#                   auth.login(request, user)
+#                   return redirect('home')
+#             return redirect('account:signup')
+      
+#       else:
+#             form = forms.SignUpform
+#             return render(request, 'signup.html', {'form' : form})

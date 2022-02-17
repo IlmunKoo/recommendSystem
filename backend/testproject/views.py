@@ -98,10 +98,12 @@ def like(request, id):
    
     return redirect('testproject:post_list')
 
-@login_required(login_url='common:login')
+@login_required(login_url='account:login')
 def comment_create(request, id):
 
     post = get_object_or_404(testData, pk=id)
+    comments= Comment.objects.all()
+
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -110,8 +112,8 @@ def comment_create(request, id):
             comment.post = post
             comment.save()
 
-            return redirect('testproject:click',id=id)
-    redirect('testproject:post_list')
+            return redirect('testproject:click',{'id':id,'comments':comments})
+    return redirect('testproject:post_list')
 
 import numpy as np
 import pandas as pd
