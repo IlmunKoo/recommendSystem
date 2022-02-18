@@ -24,6 +24,8 @@ class TestData(models.Model):
     like_cnt=models.PositiveIntegerField(null=True,blank=True,default=0)#좋아요 전체갯수
 
     user_like_cnt=models.PositiveIntegerField(null=True,blank=True,default=0)#특정 유저가 좋아요 한 갯수, 이 값은 항상 변합니다. 같은 게시물이더라도 유저에 따라서 계속 업로드가 되므로 주의하세요.
+    user_views_cnt=models.PositiveIntegerField(null=True,blank=True,default=0)#특정 유저가 방문 한 횟수, 이 값은 항상 변합니다. 같은 게시물이더라도 유저에 따라서 계속 업로드가 되므로 주의하세요.
+    user_residence_time=models.FloatField(null=True,blank=True,default=0)#특정 유저가 방문 누적 방문 시간, 이 값은 항상 변합니다. 같은 게시물이더라도 유저에 따라서 계속 업로드가 되므로 주의하세요.
 
     importance=models.FloatField(null=True,blank=True,default=0)#중요도
     

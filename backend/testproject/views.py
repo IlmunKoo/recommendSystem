@@ -75,9 +75,16 @@ def post_list(request):
     #만약 직전에 방문한 페이지가 있다면
     if detail_page_id:
         #방문한 시간을 체크해 기록합니다.
-        data=get_object_or_404(TestData, pk = detail_page_id)
-        data.residence_time+=time.time() - startT
-        data.save()
+        if not request.user:
+            data=get_object_or_404(TestData, pk = detail_page_id)
+            data.residence_time+=time.time() - startT
+            data.save()
+        else:
+            data=get_object_or_404(TestData, pk = detail_page_id)
+            data.residence_time+=time.time() - startT
+            data.user_residence_time+=time.time() - startT
+            data.save()
+
         #저장이 완료되면 시작시간과 페이지 정보를 초기화 해줍니다. 이렇게 하지 않을 시, 실제보다 많은 시간이 찍히게 됩니다.    
         startT = 0
         detail_page_id=0
@@ -106,10 +113,10 @@ def click(request, id):
     else:
         post.impressions_cnt+=1
         post.views_cnt+=1
-        post.save()
-
+        
         #유저가 방문한 페이지 +1
-        #
+        post.user_views_cnt+=1
+        post.save()
 
 
     return render(request, 'click.html',{"data":post, 'comments':comment_list})
