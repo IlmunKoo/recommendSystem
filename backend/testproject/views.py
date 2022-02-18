@@ -28,7 +28,7 @@ def post_list(request):
 
 
     post_list=testData.objects.prefetch_related("user").all()
-    comment_list=Comment.objects.all()
+    comment_list=Comment.objects.all().order_by('-created_date')
 
     for post in post_list:
         print(post.views_cnt, post.impressions_cnt)
@@ -86,7 +86,7 @@ def click(request, id):
     data.views_cnt+=1
     data.save()
 
-    comment_list=Comment.objects.all()
+    comment_list=Comment.objects.all().order_by('-created_date')
    
     return render(request, 'click.html',{"data":data, 'comments':comment_list})
 
@@ -112,8 +112,7 @@ def comment_create(request, id):
             comment.author = request.user
             comment.post = post
             comment.save()
-
-            comment_list= Comment.objects.all()
+            print('created date:     ',comment.created_date)
 
             return redirect('testproject:click',id=detail_id)
     return redirect('testproject:post_list')

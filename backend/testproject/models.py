@@ -20,11 +20,13 @@ class testData(models.Model):
 
     #알고리즘에 영향을 주는 요소이며 개인적인 레코드가 기록되는 요소, 모델을 이후 따로 만들어야 할듯.
     residence_time=models.FloatField(null=True,blank=True,default=0)#사람들의 누적 체류시간(ms), 평균적인 체류시간은 조회수로 나누면 될 듯.
-    like=models.PositiveIntegerField(null=True,blank=True)#좋아요
+    like=models.PositiveIntegerField(null=True,blank=True,default=0)#좋아요
 
     importance=models.FloatField(null=True,blank=True,default=0)#중요도
 
 class Comment(models.Model):
+    created_date=models.DateTimeField(auto_now_add=True, null=True)
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     post = models.ForeignKey(testData, null=True, blank=True, on_delete=models.CASCADE)

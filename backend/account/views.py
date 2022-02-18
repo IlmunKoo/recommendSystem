@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import check_password
 from account import forms
 from  django.views.generic import FormView
 from  . import models as user_models
+from django.urls import reverse
 
 class LoginView(FormView):
       template_name="login.html"
@@ -17,8 +18,10 @@ class LoginView(FormView):
 
             if user is not None:
                   login(self.request, user)
-                  return redirect('testproject:post_list')
-            return redirect('account:signup')
+            return super().form_valid(form)
+
+      def get_success_url(self):
+            return reverse('testproject:post_list')
 
 
 class SignUpView(FormView):
@@ -27,12 +30,16 @@ class SignUpView(FormView):
 
       def form_valid(self,form):
             form.save()
+            print(form)
             email=form.cleaned_data.get('email')
             password=form.cleaned_data.get('password')
-            user=authenticate(self.request, username=email,password=password)
+            user=authenticate(self.request, email=email,password=password)
             if user is not None:
                   login(self.request, user)
-            return redirect('account:signup')
+            return super().form_valid(form)
+
+      def get_success_url(self):
+            return reverse('testproject:post_list')
 
 # def signup_view(request):
 #       if request.method == 'POST':

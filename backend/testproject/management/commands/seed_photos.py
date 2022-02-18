@@ -7,6 +7,10 @@ from testproject import models as post_models
 import random
 import numpy as np
 
+"""
+commend: python3 manage.py seed testproject --number=100
+"""
+
 class Command(BaseCommand):
     
     help = "This command creates posts"
