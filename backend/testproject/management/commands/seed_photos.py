@@ -11,6 +11,10 @@ from models import testData, Comments
 
 
 
+"""
+commend: python3 manage.py seed testproject --number=100
+"""
+
 class Command(BaseCommand):
     
     help = "This command creates posts"
@@ -67,7 +71,7 @@ class Command(BaseCommand):
 
         random_idx=list(i for i in range(100))
 
-        seeder.add_entity(post_models.testData, number, {
+        seeder.add_entity(post_models.TestData, number, {
             "user": lambda x: random.choice(all_user),
             "image": lambda x:  f"images/insta{random.choice(random_idx)}.jpg",
             "views_cnt": lambda x: self.ones[self.random_cnt],

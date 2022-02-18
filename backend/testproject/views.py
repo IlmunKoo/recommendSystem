@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views import View
-from . models import testData,Comment
+from . models import TestData,Comment
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from . import serializer as post_serializer
@@ -27,15 +27,15 @@ def post_list(request):
     global detail_page_id
 
 
-    post_list=testData.objects.prefetch_related("user").all()
-    comment_list=Comment.objects.all()
+    post_list=TestData.objects.prefetch_related("user").all()
+    comment_list=Comment.objects.all().order_by('-created_date')
 
     for post in post_list:
         score=beta.rvs(abs(post.views_cnt), abs(post.impressions_cnt))
         post.importance = score
         post.save()
 
-    post_list = testData.objects.prefetch_related("user").order_by("-importance").all()
+    post_list = TestData.objects.prefetch_related("user").order_by("-importance").all()
 
 
     paginator= Paginator(post_list, 1)
@@ -58,7 +58,7 @@ def post_list(request):
     #만약 직전에 방문한 페이지가 있다면
     if detail_page_id:
         #방문한 시간을 체크해 기록합니다.
-        data=get_object_or_404(testData, pk = detail_page_id)
+        data=get_object_or_404(TestData, pk = detail_page_id)
         data.residence_time+=time.time() - startT
         data.save()
         #저장이 완료되면 시작시간과 페이지 정보를 초기화 해줍니다. 이렇게 하지 않을 시, 실제보다 많은 시간이 찍히게 됩니다.    
@@ -77,26 +77,31 @@ def click(request, id):
     startT = time.time()
     detail_page_id=id
 
-    data=get_object_or_404(testData, pk = id)
+    data=get_object_or_404(TestData, pk = id)
+    if data.views_cnt < 0:
+         data.views_cnt = abs(data.views_cnt)
     data.views_cnt+=1
     data.save()
 
-    comment_list=Comment.objects.all()
+    comment_list=Comment.objects.all().order_by('-created_date')
    
     return render(request, 'click.html',{"data":data, 'comments':comment_list})
 
 def like(request, id):
 
-    data=get_object_or_404(testData, pk = id)
+    data=get_object_or_404(TestData, pk = id)
     data.like+=1
     data.save()
    
     return redirect('testproject:post_list')
 
-@login_required(login_url='common:login')
+@login_required(login_url='account:login')
 def comment_create(request, id):
+    detail_id=id
 
-    post = get_object_or_404(testData, pk=id)
+    post = get_object_or_404(TestData, pk=id)
+    
+
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -104,9 +109,10 @@ def comment_create(request, id):
             comment.author = request.user
             comment.post = post
             comment.save()
+            print('created date:     ',comment.created_date)
 
-            return redirect('testproject:click',id=id)
-    redirect('testproject:post_list')
+            return redirect('testproject:click',id=detail_id)
+    return redirect('testproject:post_list')
 
 import numpy as np
 import pandas as pd
