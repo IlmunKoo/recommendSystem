@@ -50,26 +50,30 @@ class Command(BaseCommand):
         print(self.ones, self.zeros)
 
         print("init ends")
+        return total_arms
         
     def add_arguments(self, parser):
         parser.add_argument("--number", default=2, type=int, help="how many posts do you want")
 
     def handle(self, *args, **options):
         if self.random_cnt == 0:
-            self.init_data()
+            total_arms = self.init_data()
             print('init data on')
 
         number = options.get("number")
         seeder = Seed.seeder()
         all_user = user_models.User.objects.all()
 
-        random_idx=list(i for i in range(100))
+        arms = beta.rvs(1.4, 5.4, size= total_arms)
 
+        random.seed(2)
+        random_idx=list(i for i in range(100))
+        self.random_cnt += 1
         seeder.add_entity(post_models.TestData, number, {
             "user": lambda x: random.choice(all_user),
             "image": lambda x:  f"images/insta{random.choice(random_idx)}.jpg",
-            "views_cnt": lambda x: self.ones[self.random_cnt],
-            "impressions_cnt": lambda x: self.zeros[self.random_cnt],
+            "views_cnt": lambda x: self.ones[random.choice(random_idx)],
+            "impressions_cnt": lambda x: self.zeros[random.choice(random_idx)],
             "text_length": lambda x: random.randint(1,10000),
             "image_cnt": lambda x: random.randint(1,10000),
             "like": lambda x:  random.randint(1,10000),
@@ -77,6 +81,6 @@ class Command(BaseCommand):
         })
         created_room = seeder.execute()
 
-        self.random_cnt += 1
+       
 
         created_clean = flatten(list(created_room.values()))
