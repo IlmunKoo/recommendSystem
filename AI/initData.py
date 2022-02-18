@@ -10,7 +10,7 @@ def initData():
 
         rounds  = 1000
         # Total posts
-        total_arms  = 100004
+        total_arms  = 10004
         ones = np.full(total_arms, 0)
         zeros = np.full(total_arms, 0)
         ctr = np.full(total_arms, 0)
@@ -25,7 +25,7 @@ def initData():
             ctr[i] = (ones[i] / zeros[i])* 10
         ones = ones.astype(int)
         zeros = zeros.astype(int)
-
+        print(ones, zeros, ctr)
         print("init ends")
         return ones, zeros, ctr
         
