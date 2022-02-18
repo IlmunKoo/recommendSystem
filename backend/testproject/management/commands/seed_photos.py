@@ -6,15 +6,21 @@ from account import models as user_models
 from testproject import models as post_models
 import random
 import numpy as np
+from scipy.stats import beta
+from models import testData, Comments
+
+
 
 class Command(BaseCommand):
     
     help = "This command creates posts"
 
     def __init__(self):
+        print("initiation")
         self.random_cnt = 0
         self.ones = []
         self.zeros = []
+        # self.init_data()
 
     def init_data(self):
         print("init starts")
@@ -26,11 +32,8 @@ class Command(BaseCommand):
         np.random.seed(seed)
 
         # Total posts
-        total_arms  = 10
-
-        # probs of posts : 각 게시물이 선택될 확률
-        arms = [random.betavariate(1.4, 5.4) for i in range(total_arms)] 
-    
+        total_arms  = 100
+        
         # Rouns test
         rounds  = 100
         clicks = []
@@ -40,22 +43,23 @@ class Command(BaseCommand):
 
         # 알파, 베타값의 배열 초기화 
         for _ in range(rounds):
-            for i, a in enumerate(arms):  # 랜덤추출 
-                value = np.random.binomial(1, a, rounds) # arms의 확률대로 초기화:  0 or 1
-                print(f" idx : {i}")
-                if value[i] == 1: 
+            arms = beta.rvs(1.4, 5.4, size= total_arms)
+            for i in range(len(arms)):  
+                if arms[i] == 1: 
                     self.ones[i] += 1
                 else:
+                    print(self.zeros)
                     self.zeros[i] += 1
+            print(self.zeros)
         print("init ends")
         
     def add_arguments(self, parser):
         parser.add_argument("--number", default=2, type=int, help="how many posts do you want")
 
     def handle(self, *args, **options):
-
         if self.random_cnt == 0:
             self.init_data()
+            print('init data on')
 
         number = options.get("number")
         seeder = Seed.seeder()
