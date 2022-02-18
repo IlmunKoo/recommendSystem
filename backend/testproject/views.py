@@ -31,7 +31,7 @@ def post_list(request):
     comment_list=Comment.objects.all().order_by('-created_date')
 
     for post in post_list:
-        score=beta.rvs(abs(post.views_cnt), abs(post.impressions_cnt))
+        score=beta.rvs(post.views_cnt, abs(post.impressions_cnt))
         post.importance = score
         post.save()
 
