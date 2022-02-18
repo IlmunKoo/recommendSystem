@@ -7,6 +7,7 @@ from testproject import models as post_models
 import random
 import numpy as np
 from scipy.stats import beta
+from models import testData, Comments
 
 
 
@@ -19,10 +20,11 @@ class Command(BaseCommand):
     help = "This command creates posts"
 
     def __init__(self):
+        print("initiation")
         self.random_cnt = 0
         self.ones = []
         self.zeros = []
-        self.init_data()
+        # self.init_data()
 
     def init_data(self):
         print("init starts")
@@ -35,7 +37,7 @@ class Command(BaseCommand):
 
         # Total posts
         total_arms  = 100
-    
+        
         # Rouns test
         rounds  = 100
         clicks = []
@@ -59,9 +61,9 @@ class Command(BaseCommand):
         parser.add_argument("--number", default=2, type=int, help="how many posts do you want")
 
     def handle(self, *args, **options):
-
         if self.random_cnt == 0:
             self.init_data()
+            print('init data on')
 
         number = options.get("number")
         seeder = Seed.seeder()
