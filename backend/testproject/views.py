@@ -89,7 +89,7 @@ def click(request, id):
 
     if not request.user:
 
-        data.impressions_cnt+=1
+        data.impressions_cnt-=1
         data.views_cnt+=1
         data.save()
     else:
@@ -107,8 +107,8 @@ def click(request, id):
 
 def like(request, id):
     detail_id=id
-    post=get_object_or_404(TestData, pk = id)
-    post.like+=1
+    post=get_object_or_404(TestData, pk = detail_id)
+    post.like_cnt+=1
     post.save()
 
     like=Like(user=request.user, post=post) 
