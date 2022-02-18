@@ -1,7 +1,8 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views import View
-from . models import TestData,Comment
+from testproject.models import TestData,Comment,Like
+from account.models import User
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from . import serializer as post_serializer
@@ -25,22 +26,27 @@ def post_list(request):
 
     global startT
     global detail_page_id
-
-
+    
     post_list=TestData.objects.prefetch_related("user").all()
     comment_list=Comment.objects.all().order_by('-created_date')
 
-    for post in post_list:
-        score=beta.rvs(post.views_cnt, abs(post.impressions_cnt))
-        post.importance = score
-        post.save()
+    #유저의 로그인 여부에 따라 추천 알고리즘을 다르게 적용.
+    print("user:    " ,request.user)
+    if not request.user:
 
-    post_list = TestData.objects.prefetch_related("user").order_by("-importance").all()
+        for post in post_list:
+            score=beta.rvs(post.views_cnt, abs(post.impressions_cnt))
+            post.importance = score
+            post.save()
 
+        post_list = TestData.objects.prefetch_related("user").order_by("-importance").all()
+    else:
+        #개별 유저들의 추천 알고리즘
+        #post_list = TestData.objects.prefetch_related("user").order_by("-importance").all()
+        pass
 
     paginator= Paginator(post_list, 1)
-    page_num= request.GET.get('page')
-    
+    page_num= request.GET.get('page')   
     try:
         posts=paginator.get_page(page_num)
 
@@ -79,38 +85,50 @@ def click(request, id):
     detail_page_id=id
 
     data=get_object_or_404(TestData, pk = id)
-    if data.views_cnt < 0:
-         data.views_cnt = abs(data.views_cnt)
-    data.views_cnt+=1
-    data.save()
-
     comment_list=Comment.objects.all().order_by('-created_date')
+
+    if not request.user:
+
+        data.impressions_cnt+=1
+        data.views_cnt+=1
+        data.save()
+    else:
+        data.impressions_cnt+=1
+        data.views_cnt+=1
+        data.save()
+
+        #유저가 방문한 페이지 +1
+        #
+
+
+        
    
     return render(request, 'click.html',{"data":data, 'comments':comment_list})
 
 def like(request, id):
+    detail_id=id
+    post=get_object_or_404(TestData, pk = id)
+    post.like+=1
+    post.save()
 
-    data=get_object_or_404(TestData, pk = id)
-    data.like+=1
-    data.save()
+    like=Like(user=request.user, post=post) 
+    like.save()
    
     return redirect('testproject:post_list')
 
 @login_required(login_url='account:login')
 def comment_create(request, id):
     detail_id=id
-
     post = get_object_or_404(TestData, pk=id)
     
-
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.author = request.user
+            comment.user = request.user
             comment.post = post
             comment.save()
-            print('created date:     ',comment.created_date)
+            print('created date: ',comment.created_date)
 
             return redirect('testproject:click',id=detail_id)
     return redirect('testproject:post_list')
