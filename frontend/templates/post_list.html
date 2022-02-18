@@ -21,7 +21,7 @@
         <section class="inner">
 
             <h1 class="logo">                    
-                <img src="static/images/logo.png" alt="프로필이미지" width=150/>
+                <a href="{% url 'testproject:post_list' %}"><img src="static/images/logo.png" alt="프로필이미지" width=150/></a>  
             </h1>
 
             <div class="search_box" >
@@ -30,7 +30,7 @@
             </div>
             
 
-            <div><a href="{% url 'account:login'%}">로그인</a></div>
+            <div><a href="{% url 'account:login'%}"><img src="static/images/login.png" alt="heart" width=30></a></div>
 
         </section>
         
@@ -49,8 +49,8 @@
                                     <img src="static/images/jenny.jpeg" alt="프로필이미지">
                                 </div>
                                 <div class="user_name">
-                                    <div class="nick_name m_text">modldi</div>
-                                    <div class="country s_text">Seoul, South Korea</div>
+                                    <div class="nick_name m_text">{{ data.user }}</div>
+                                    {% comment %} <div class="country s_text">Seoul, South Korea</div> {% endcomment %}
                                 </div>
 
                             </div>
@@ -119,22 +119,20 @@
 
                         </div>          
 
-                        <div class="timer">1시간 전</div>
+                        <div class="timer">누적 조회시간: {{ data.residence_time }} ms</div>
+                        
 
-                        <div class="comment_field" id="add-comment-post37">
-                            
+                        <div class="comment_field" >
                             <form action="{% url 'testproject:comment_create' data.id %}" method="POST">
                                 {% csrf_token %}
                                 <div>
                                     <input type="text" placeholder="댓글달기..." name="content">
-                                </div>
-                           
-                                <button type="submit" class="upload_btn m_text" data-name="comment" style="background-color:white; border-color: white; background:">게시</button>
+                                </div> 
+                                <button type="submit" class="upload_btn m_text" style="background-color:white; border-color: white; border:0;">게시</button>
                             </form>
                         </div>
                     </article>
-
-
+                    
 
                 </div>
                 <input type="hidden" id="page" value="1">
@@ -145,7 +143,7 @@
                             <img src="static/images/jenny.jpeg" alt="프로필사진">
                         </div>
                         <div class="detail">
-                            <div class="id m_text">modldi</div>
+                            <div class="id m_text">{{ data.user }}</div>
                             <div class="ko_name"></div>
                         </div>
                     </div>
@@ -162,7 +160,7 @@
                                     <img src="static/images/jenny.jpeg" alt="프로필사진">
                                 </div>
                                 <div class="detail">
-                                    <div class="id">modldi</div>
+                                    <div class="id">{{ data.user }}</div>
                                     <div class="time">1시간 전</div>
                                 </div>
                             </div>
@@ -171,19 +169,22 @@
                 </div>
             </div>
         </section>
+        {% endfor %}
+       
+
         <div class="paginator">
             {% if posts.has_previous %}
-            <div style="position: absolute; left: 80px; top: 500px;">
+            <div style="position: absolute; left: 80px; top: 700px;">
             <a href="?page={{posts.previous_page_number}}" style="text-align: center; margin-right: 1200px;"><img src="static/images/pngwing.com.png" alt="페이지네이터" width=100></a>
             </div>
             {% endif %}
             {% if posts.has_next %}
-            <div style="position: absolute; right: 80px; top: 500px;">
+            <div style="position: absolute; right: 80px; top: 700px;">
             <a href="?page={{posts.next_page_number}}"><img src="static/images/pngwing.com copy.png" alt="페이지네이터" width=100></a>
             </div>
             {% endif %}
         </div> 
-    {% endfor %}
+ 
    
 
     
