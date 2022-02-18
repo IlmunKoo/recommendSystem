@@ -3,15 +3,17 @@ from django.core.management.base import BaseCommand
 from django.contrib.admin.utils import flatten
 from django_seed import Seed
 from account import models as user_models
-from testproject import models as post_models
+from testproject.models import TestData, Comment
 import random
 import numpy as np
 from scipy.stats import beta
 
 
 
+
 """
-commend: python3 manage.py seed testproject --number=100
+commend: 
+python3 manage.py seed_photos --number 100
 """
 
 class Command(BaseCommand):
@@ -66,18 +68,19 @@ class Command(BaseCommand):
 
         arms = beta.rvs(1.4, 5.4, size= total_arms)
 
+
         random.seed(2)
         random_idx=list(i for i in range(100))
         self.random_cnt += 1
+        
         seeder.add_entity(post_models.TestData, number, {
             "user": lambda x: random.choice(all_user),
             "image": lambda x:  f"images/insta{random.choice(random_idx)}.jpg",
             "views_cnt": lambda x: self.ones[random.choice(random_idx)],
-            "impressions_cnt": lambda x: self.zeros[random.choice(random_idx)],
+            "exposure": lambda x: self.zeros[self.random_cnt]+self.ones[self.random_cnt],
             "text_length": lambda x: random.randint(1,10000),
             "image_cnt": lambda x: random.randint(1,10000),
             "like": lambda x:  random.randint(1,10000),
-            "importance":lambda x: random.randint(1,10000),
         })
         created_room = seeder.execute()
 

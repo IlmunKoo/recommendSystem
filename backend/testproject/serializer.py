@@ -1,6 +1,6 @@
 from .models import TestData
 from rest_framework import serializers
-from . import models as post_models
+from . import models
 
 class TestDataSerializer(serializers.ModelSerializer):
 
@@ -12,5 +12,5 @@ class TestDataSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = post_models.TestData
+        model = TestData
         fields = "__all__"
