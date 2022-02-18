@@ -73,11 +73,11 @@ class Command(BaseCommand):
         random_idx=list(i for i in range(100))
         self.random_cnt += 1
         
-        seeder.add_entity(post_models.TestData, number, {
+        seeder.add_entity( TestData, number, {
             "user": lambda x: random.choice(all_user),
             "image": lambda x:  f"images/insta{random.choice(random_idx)}.jpg",
             "views_cnt": lambda x: self.ones[random.choice(random_idx)],
-            "exposure": lambda x: self.zeros[self.random_cnt]+self.ones[self.random_cnt],
+            "exposure": lambda x: self.zeros[random.choice(random_idx)]+self.ones[random.choice(random_idx)],
             "text_length": lambda x: random.randint(1,10000),
             "image_cnt": lambda x: random.randint(1,10000),
             "like": lambda x:  random.randint(1,10000),
