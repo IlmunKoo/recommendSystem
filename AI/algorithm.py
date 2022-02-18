@@ -27,8 +27,8 @@ def main():
     print(list(dic.values()))
 
 
-    user_ratings, ratings_data, full_metadata = getData(ctr)
-    print(user_ratings, ratings_data, full_metadata)
+    user_ratings, ratings_data = getData(ctr)
+    print(user_ratings, ratings_data)
     
     # 비슷한 아이템 추천 (특정 게시물과 유사한 게시물) 
     recByItemList= recByItem(user_ratings)
