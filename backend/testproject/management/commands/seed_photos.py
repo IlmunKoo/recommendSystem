@@ -6,6 +6,9 @@ from account import models as user_models
 from testproject import models as post_models
 import random
 import numpy as np
+from scipy.stats import beta
+
+
 
 """
 commend: python3 manage.py seed testproject --number=100
@@ -19,6 +22,7 @@ class Command(BaseCommand):
         self.random_cnt = 0
         self.ones = []
         self.zeros = []
+        self.init_data()
 
     def init_data(self):
         print("init starts")
@@ -30,10 +34,7 @@ class Command(BaseCommand):
         np.random.seed(seed)
 
         # Total posts
-        total_arms  = 10
-
-        # probs of posts : 각 게시물이 선택될 확률
-        arms = [random.betavariate(1.4, 5.4) for i in range(total_arms)] 
+        total_arms  = 100
     
         # Rouns test
         rounds  = 100
@@ -44,13 +45,14 @@ class Command(BaseCommand):
 
         # 알파, 베타값의 배열 초기화 
         for _ in range(rounds):
-            value = np.random.choice(2, len(arms), arms) # 매 라운드마다 확률에 따라  0 or 1 값 다시 생성 
-            for i in range(len(value)):  # 랜덤추출 
-                print(f" idx : {i}")
-                if value[i] == 1: 
+            arms = beta.rvs(1.4, 5.4, size= total_arms)
+            for i in range(len(arms)):  
+                if arms[i] == 1: 
                     self.ones[i] += 1
                 else:
+                    print(self.zeros)
                     self.zeros[i] += 1
+            print(self.zeros)
         print("init ends")
         
     def add_arguments(self, parser):

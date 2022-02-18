@@ -31,7 +31,6 @@ def post_list(request):
     comment_list=Comment.objects.all().order_by('-created_date')
 
     for post in post_list:
-        print(post.views_cnt, post.impressions_cnt)
         score=beta.rvs(abs(post.views_cnt), abs(post.impressions_cnt))
         post.importance = score
         post.save()
@@ -46,8 +45,6 @@ def post_list(request):
         posts=paginator.get_page(page_num)
 
         for post in posts:
-            if post.impressions_cnt <0:
-                post.impressions_cnt = abs(post.impressions_cnt)
             post.impressions_cnt+=1
             post.save()
 
