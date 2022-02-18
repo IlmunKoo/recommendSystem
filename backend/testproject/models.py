@@ -1,7 +1,7 @@
 from django.db import models
 from account.models import User
 # Create your models here.
-class testData(models.Model):
+class TestData(models.Model):
     #순수 게시물 관련 데이터
     id= models.AutoField(primary_key=True, null=False, blank=False)
     image=models.ImageField(upload_to="images",null=True, blank=True)#이미지
@@ -29,4 +29,4 @@ class Comment(models.Model):
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
-    post = models.ForeignKey(testData, null=True, blank=True, on_delete=models.CASCADE)
+    post = models.ForeignKey(TestData, null=True, blank=True, on_delete=models.CASCADE)
