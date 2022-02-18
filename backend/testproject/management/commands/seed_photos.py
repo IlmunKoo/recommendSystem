@@ -73,11 +73,10 @@ class Command(BaseCommand):
             "user": lambda x: random.choice(all_user),
             "image": lambda x:  f"images/insta{random.choice(random_idx)}.jpg",
             "views_cnt": lambda x: self.ones[self.random_cnt],
-            "impressions_cnt": lambda x: self.zeros[self.random_cnt],
+            "exposure": lambda x: self.zeros[self.random_cnt],
             "text_length": lambda x: random.randint(1,10000),
             "image_cnt": lambda x: random.randint(1,10000),
             "like": lambda x:  random.randint(1,10000),
-            "importance":lambda x: random.randint(1,10000),
         })
         created_room = seeder.execute()
 

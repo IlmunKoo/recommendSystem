@@ -45,7 +45,8 @@ def post_list(request):
         posts=paginator.get_page(page_num)
 
         for post in posts:
-            post.impressions_cnt+=1
+            post.exposure+=1
+            post.impressions_cnt=post.exposure-post.views_cnt
             post.save()
 
 
