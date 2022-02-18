@@ -13,7 +13,7 @@ def recByItem(user_ratings):
     # numpy의 corrcoef를 이용하면 된다. 
     corr = np.corrcoef(matrix) # 각 게시물 사이의 피어슨 상관계수 
     post_ratings = pd.DataFrame(post_ratings)
-
+    
     # 특정 영화와 관련하여 상관계수가 높은 영화를 보여준다. 
 
     postId = user_ratings.columns # 개수가 9066개로 맞아야 한다. 
