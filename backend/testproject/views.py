@@ -32,6 +32,7 @@ def post_list(request):
 
     #유저의 로그인 여부에 따라 추천 알고리즘을 다르게 적용.
     print("user:    " ,request.user)
+    #로그인이 안되었을 시 ,전체 추천
     if not request.user:
 
         for post in post_list:
@@ -40,10 +41,19 @@ def post_list(request):
             post.save()
 
         post_list = TestData.objects.prefetch_related("user").order_by("-importance").all()
+    #로그인이 되었을 시, 개별 유저에 특화하여 추천.
     else:
         #개별 유저들의 추천 알고리즘
         #post_list = TestData.objects.prefetch_related("user").order_by("-importance").all()
-        pass
+
+        posts= TestData.objects.all()#전체 게시글들
+        user_likes= Like.objects.filter(user=request.user)#유저가 좋아요 누른 전체 정보들
+
+        for post in posts:
+            cnt= user_likes.filter(post=post).count()#유저가 좋아요 누른 갯수를 각 개시글에 저장
+            post.user_like_cnt=cnt
+            post.save()#특정 유저가 특정 게시물에 좋아요한 갯수.
+
 
     paginator= Paginator(post_list, 1)
     page_num= request.GET.get('page')   
@@ -84,39 +94,37 @@ def click(request, id):
     startT = time.time()
     detail_page_id=id
 
-    data=get_object_or_404(TestData, pk = id)
+    post=get_object_or_404(TestData, pk = id)
     comment_list=Comment.objects.all().order_by('-created_date')
 
     if not request.user:
 
-        data.impressions_cnt-=1
+        post.impressions_cnt-=1
 
-        data.views_cnt+=1
-        data.save()
+        post.views_cnt+=1
+        post.save()
     else:
-        data.impressions_cnt+=1
-        data.views_cnt+=1
-        data.save()
+        post.impressions_cnt+=1
+        post.views_cnt+=1
+        post.save()
 
         #유저가 방문한 페이지 +1
         #
 
 
-        
-   
-    return render(request, 'click.html',{"data":data, 'comments':comment_list})
+    return render(request, 'click.html',{"data":post, 'comments':comment_list})
 
 def like(request, id):
+    print(id)
     detail_id=id
 
     post=get_object_or_404(TestData, pk = detail_id)
     post.like_cnt+=1
-
     post.save()
 
-    like=Like(user=request.user, post=post) 
-    like.save()
-   
+    if request.user:
+        like=Like(user=request.user, post=post) 
+        like.save()  
     return redirect('testproject:post_list')
 
 @login_required(login_url='account:login')
