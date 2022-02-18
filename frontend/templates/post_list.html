@@ -25,14 +25,6 @@
             </h1>
 
             <div class="search_box" >
-
-                <input type="text" placeholder="검색" id="search-field">
-
-                <div class="fake_field">
-                    <span class="sprite_small_search_icon"></span>
-                    <span>검색</span>
-                </div>
-
                 
               
             </div>
@@ -74,12 +66,17 @@
 
                         <div class="img_section">
                             <div class="trans_inner">
-                                <a href="{% url 'testproject:click' data.id %}"><img src="{{data.image.url}}" alt="visual01"></a>
+                                <a href="{% url 'testproject:click' data.id %}"><img src="{{data.image.url}}" alt="visual01" height="300"></a>
                             </div>
                         </div>
 
                         <div class="bottom_icons">
+
                             <div class="left_icons">
+
+                                <div class="small_heart">
+                                    <a href="{% url 'testproject:like' data.id %}"><img src="static/images/heart.png" alt="heart" width=30></a>
+                                </div>
                                 <div class="heart_btn">
                                     <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
                                 </div>
@@ -89,9 +86,11 @@
                             <div class="right_icon">
                                 <div class="sprite_bookmark_outline" data-name="bookmark"></div>
                             </div>
+ 
                         </div>
 
                         <div class="likes m_text">
+                            <div>좋아요:{{ data.like }}</div>
                             조회수
                             <span id="like-count-39">{{ data.views_cnt }}</span>
                             <span id="bookmark-count-39"></span>
@@ -102,12 +101,13 @@
                             <span id="bookmark-count-39"></span>
                             개
                             <div>글자수:{{ data.text_length }}</div>
+                            
                         </div>
 
                         <div class="comment_container">
                             
                             <div class="comment" id="comment-list-ajax-post37">
-                                {% for comment in comments %}
+                                {% for comment in comments|slice:":3" %}
                                     {% if data == comment.post %}
                                         <div class="comment-detail">
                                             <div class="nick_name m_text">{{comment.author}}</div>          
@@ -116,20 +116,19 @@
                                     {% endif %}
                                 {% endfor %} 
                             </div>
-                            <div class="small_heart">
-                                <div class="sprite_small_heart_icon_outline"></div>
-                            </div>
+
                         </div>          
 
                         <div class="timer">1시간 전</div>
 
                         <div class="comment_field" id="add-comment-post37">
                             
-                            <form action="{% url 'testproject:comment_create' data.id %}" method="post">
+                            <form action="{% url 'testproject:comment_create' data.id %}" method="POST">
                                 {% csrf_token %}
                                 <div>
                                     <input type="text" placeholder="댓글달기..." name="content">
                                 </div>
+                           
                                 <button type="submit" class="upload_btn m_text" data-name="comment" style="background-color:white; border-color: white; background:">게시</button>
                             </form>
                         </div>
