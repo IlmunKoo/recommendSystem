@@ -14,7 +14,8 @@ class TestData(models.Model):
 
     #알고리즘에 영향을 주는 요소
     views_cnt=models.PositiveIntegerField(null=True,blank=True)#조회수  
-    impressions_cnt=models.PositiveIntegerField(default=1)#노출수
+    exposure=models.PositiveIntegerField(null=True,blank=True,default=0)#총 노출수
+    impressions_cnt=models.IntegerField(default=1)#노출되었지만 클릭 안된수. 현재 테스트 케이스의 문제로 음수 허용, 이후 수정 필요.
     text_length=models.PositiveIntegerField(null=True,blank=True)#글자 길이
     image_cnt=models.PositiveIntegerField(null=True,blank=True,default=1)#이미지 갯수
 
@@ -23,6 +24,7 @@ class TestData(models.Model):
     like=models.PositiveIntegerField(null=True,blank=True,default=0)#좋아요
 
     importance=models.FloatField(null=True,blank=True,default=0)#중요도
+    
 
 class Comment(models.Model):
     created_date=models.DateTimeField(auto_now_add=True, null=True)
