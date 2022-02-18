@@ -7,7 +7,6 @@ from testproject import models as post_models
 import random
 import numpy as np
 from scipy.stats import beta
-from models import testData, Comments
 
 
 
@@ -30,10 +29,6 @@ class Command(BaseCommand):
         print("init starts")
         # '0' as a reward from each ad
         # 데이터 랜덤추출 
-        seed = 12
-        random.seed(seed)
-        rng = np.random.RandomState(seed)
-        np.random.seed(seed)
 
         # Total posts
         total_arms  = 100
@@ -42,19 +37,18 @@ class Command(BaseCommand):
         rounds  = 100
         clicks = []
 
-        self.ones = np.full(rounds, 0)
-        self.zeros = np.full(rounds, 0)
+        self.ones = np.full(total_arms, 0)
+        self.zeros = np.full(total_arms, 0)
 
-        # 알파, 베타값의 배열 초기화 
-        for _ in range(rounds):
-            arms = beta.rvs(1.4, 5.4, size= total_arms)
-            for i in range(len(arms)):  
-                if arms[i] == 1: 
-                    self.ones[i] += 1
-                else:
-                    print(self.zeros)
-                    self.zeros[i] += 1
-            print(self.zeros)
+        arms = beta.rvs(1.4, 5.4, size= total_arms)
+
+        for i in range(len(arms)):
+            self.ones[i] = int(round(arms[i]*100,2))
+            self.zeros[i] = 100 - int(round(arms[i],2)*100)
+        self.ones = self.ones.astype(int)
+        self.zeros = self.zeros.astype(int)
+        print(self.ones, self.zeros)
+
         print("init ends")
         
     def add_arguments(self, parser):
