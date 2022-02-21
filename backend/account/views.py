@@ -25,8 +25,10 @@ class LoginView(FormView):
 
 
 class SignUpView(FormView):
-      template_name="signup.html"
+      template_name="login.html"
       form_class=forms.SignUpform
+
+      print('ok')
 
       def form_valid(self,form):
             form.save()
