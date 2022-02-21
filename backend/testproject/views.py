@@ -69,6 +69,7 @@ def post_list(request):
         posts= TestData.objects.all()#전체 게시글들
         user_likes= Like.objects.filter(user=request.user)#유저가 좋아요 누른 전체 정보들
         print(user_likes)
+
         svdRecList, sequentialRecList =beginRecommend(request.user.id, 5) # 10 개 기본추천 
         
         for post in post_list:
@@ -88,9 +89,6 @@ def post_list(request):
             post = TestData.objects.get(id = recommendList[i])
             post.importance = 1- (0.000001*i)
             post.save()
-
-
-
 
 
         for post in posts:
