@@ -81,10 +81,7 @@ class Command(BaseCommand):
             "exposure": lambda x: self.zeros[random.choice(random_idx)]+self.ones[random.choice(random_idx)],
             "text_length": lambda x: random.randint(1,10000),
             "image_cnt": lambda x: random.randint(1,10000),
-            "like": lambda x:  random.randint(1,10000),
+            "like_cnt": lambda x:  random.randint(1,10000),
         })
         created_room = seeder.execute()
-
-       
-
         created_clean = flatten(list(created_room.values()))

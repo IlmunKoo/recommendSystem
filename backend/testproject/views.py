@@ -1,3 +1,4 @@
+from turtle import pos
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views import View
@@ -20,8 +21,7 @@ from .forms import CommentForm
 startT=0
 detail_page_id=0
 
-
-        
+   
 def post_list(request):
 
     global startT
@@ -33,7 +33,7 @@ def post_list(request):
     #유저의 로그인 여부에 따라 추천 알고리즘을 다르게 적용.
     print("user:    " ,request.user)
     #로그인이 안되었을 시 ,전체 추천
-    if not request.user:
+    if not request.user.is_authenticated:
 
         for post in post_list:
             score=beta.rvs(post.views_cnt, abs(post.impressions_cnt))
@@ -48,6 +48,7 @@ def post_list(request):
 
         posts= TestData.objects.all()#전체 게시글들
         user_likes= Like.objects.filter(user=request.user)#유저가 좋아요 누른 전체 정보들
+        print(user_likes)
 
         for post in posts:
             cnt= user_likes.filter(post=post).count()#유저가 좋아요 누른 갯수를 각 개시글에 저장
@@ -104,6 +105,7 @@ def click(request, id):
     post=get_object_or_404(TestData, pk = id)
     comment_list=Comment.objects.all().order_by('-created_date')
 
+    
     if not request.user:
 
         post.impressions_cnt-=1
@@ -111,6 +113,8 @@ def click(request, id):
         post.views_cnt+=1
         post.save()
     else:
+        print('user like cnt : ',post.user_like_cnt)
+
         post.impressions_cnt+=1
         post.views_cnt+=1
         
