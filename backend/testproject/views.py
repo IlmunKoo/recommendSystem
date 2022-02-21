@@ -56,7 +56,7 @@ def post_list(request):
             post.save()#특정 유저가 특정 게시물에 좋아요한 갯수.
 
 
-    paginator= Paginator(post_list, 1)
+    paginator= Paginator(post_list, 3)
     page_num= request.GET.get('page')   
     try:
         posts=paginator.get_page(page_num)
@@ -114,6 +114,8 @@ def click(request, id):
         post.save()
     else:
         print('user like cnt : ',post.user_like_cnt)
+        print('user view cnt : ',post.user_views_cnt)
+        print('user_residence_time : ',post.user_residence_time)
 
         post.impressions_cnt+=1
         post.views_cnt+=1
