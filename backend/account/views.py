@@ -11,13 +11,17 @@ class LoginView(FormView):
       template_name="login.html"
       form_class=forms.LoginForm
 
+      print("login ok")
+
       def form_valid(self, form):
             email=form.cleaned_data.get('email')
             password=form.cleaned_data.get('password')
             user=authenticate(self.request,username=email, password=password)
 
             if user is not None:
+
                   login(self.request, user)
+                  
             return super().form_valid(form)
 
       def get_success_url(self):
@@ -25,10 +29,10 @@ class LoginView(FormView):
 
 
 class SignUpView(FormView):
-      template_name="login.html"
+      template_name="signup.html"
       form_class=forms.SignUpform
 
-      print('ok')
+      print('signup ok')
 
       def form_valid(self,form):
             form.save()
@@ -37,8 +41,11 @@ class SignUpView(FormView):
             password=form.cleaned_data.get('password')
             user=authenticate(self.request, email=email,password=password)
             if user is not None:
+
+                  print("signup form valid ok")
                   login(self.request, user)
-            return super().form_valid(form)
+
+            return super(SignUpView,self).form_valid(form)
 
       def get_success_url(self):
             return reverse('testproject:post_list')

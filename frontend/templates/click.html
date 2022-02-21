@@ -101,7 +101,7 @@
                             <div class="admin_container">
                                 <div class="admin"><img src="static/images/jenny.jpeg" alt="user"></div>
                                 <div class="comment">
-                                    <span class="user_id">{{comment.author}}</span>{{comment.content}}
+                                    <span class="user_id">{{comment.user}}</span>{{comment.content}}
                                     <div class="time"></div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
 
                         <div class="count_likes">
                             좋아요
-                            <span class="count">{{ data.like }}</span>
+                            <span class="count">{{ data.like_cnt }}</span>
                             개
                         </div>
                         <div class="timer">누적 조회시간: {{ data.residence_time }} ms</div>

@@ -20,8 +20,8 @@
     <header id="header">
         <section class="inner">
 
-            <h1 class="logo">                    
-                <a href="{% url 'testproject:post_list' %}"><img src="static/images/logo.png" alt="프로필이미지" width=150/></a>  
+            <h1 class="logo">                 
+                <a href="{% url 'testproject:post_list' %}"><img src="static/images/logo.png" alt="프로필이미지" width=150 style="position: absolute; left: 50px; top:15px"/></a>  
             </h1>
 
             <div class="search_box" >
@@ -29,165 +29,127 @@
               
             </div>
             
+            
+            
 
-            <div><a href="{% url 'account:login'%}"><img src="static/images/login.png" alt="heart" width=30></a></div>
+            <div><a href="{% url 'account:login'%}"><img src="static/images/login.png" alt="heart" width=30 style="position: absolute; right: 100px; top:25px"></a></div>
 
         </section>
         
     </header>
     
 
+    <table border = 0 style="position: absolute; left: 10px;">
+        <tr>
     {% for data in posts %}
-        <section id="main_container">
-            <div class="inner">
+        <td>
+            <section id="main_container">
+                
+                <div class="inner" >
+                    <div class="contents_box">
+                        <article class="contents">
 
-                <div class="contents_box">
-                    <article class="contents">
-                        <header class="top">
-                            <div class="user_container">
-                                <div class="profile_img">
-                                    <img src="static/images/jenny.jpeg" alt="프로필이미지">
+                            <div class="img_section">
+                                <div class="trans_inner">
+                                    <a href="{% url 'testproject:click' data.id %}"><img src="{{data.image.url}}" alt="visual01" height="300"></a>
                                 </div>
-                                <div class="user_name">
-                                    <div class="nick_name m_text">{{ data.user }}</div>
-                                    {% comment %} <div class="country s_text">Seoul, South Korea</div> {% endcomment %}
+                            </div>
+
+                            <div class="bottom_icons">
+
+                                <div class="left_icons">
+
+                                    <div class="small_heart">
+                                        <a href="{% url 'testproject:like' data.id %}"><img src="static/images/heart.png" alt="heart" width=30></a>
+                                    </div>
+                                    <div class="heart_btn">
+                                        <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
+                                    </div>
+                                    <div class="sprite_bubble_icon"></div>
+                                    <div class="sprite_share_icon" data-name="share"></div>
+                                </div>
+                                <div class="right_icon">
+                                    <div class="sprite_bookmark_outline" data-name="bookmark"></div>
+                                </div>
+    
+                            </div>
+
+                            <div class="likes m_text">
+                                <div>좋아요:{{ data.like_cnt }}</div>
+                                조회수
+                                <span id="like-count-39">{{ data.views_cnt }}</span>
+                                <span id="bookmark-count-39"></span>
+                                개
+                                <br>
+                                노출수
+                                <span id="like-count-39">{{ data.exposure}}</span>
+                                <span id="bookmark-count-39"></span>
+                                개
+                                <div>글자수:{{ data.text_length }}</div>
+                                노출은 되었으나 클릭되지 않은 횟수
+                                <span id="like-count-39">{{ data.impressions_cnt }}</span>
+                                <span id="bookmark-count-39"></span>
+                                개
+                                
+                            </div>
+
+                            <div class="comment_container">
+                                
+                                <div class="comment" id="comment-list-ajax-post37">
+                                    {% for comment in comments|slice:":2" %}
+                                        {% if data == comment.post %}
+                                            <div class="comment-detail">
+                                                <div class="nick_name m_text">{{comment.user}}</div>          
+                                                : {{comment.content}}<br>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %} 
                                 </div>
 
-                            </div>
+                            </div>          
 
-                            <div class="sprite_more_icon" data-name="more">
-                                <ul class="toggle_box">
-                                <li><input type="submit" class="follow" value="팔로우" data-name="follow"></li>
-                                    <li>수정</li>
-                                    <li>삭제</li>
-                                </ul>
-                            </div>
-                        </header>
-
-                        <div class="img_section">
-                            <div class="trans_inner">
-                                <a href="{% url 'testproject:click' data.id %}"><img src="{{data.image.url}}" alt="visual01" height="300"></a>
-                            </div>
-                        </div>
-
-                        <div class="bottom_icons">
-
-                            <div class="left_icons">
-
-                                <div class="small_heart">
-                                    <a href="{% url 'testproject:like' data.id %}"><img src="static/images/heart.png" alt="heart" width=30></a>
-                                </div>
-                                <div class="heart_btn">
-                                    <div class="sprite_heart_icon_outline" name="39" data-name="heartbeat"></div>
-                                </div>
-                                <div class="sprite_bubble_icon"></div>
-                                <div class="sprite_share_icon" data-name="share"></div>
-                            </div>
-                            <div class="right_icon">
-                                <div class="sprite_bookmark_outline" data-name="bookmark"></div>
-                            </div>
- 
-                        </div>
-
-                        <div class="likes m_text">
-                            <div>좋아요:{{ data.like_cnt }}</div>
-                            조회수
-                            <span id="like-count-39">{{ data.views_cnt }}</span>
-                            <span id="bookmark-count-39"></span>
-                            개
-                            <br>
-                            노출수
-                            <span id="like-count-39">{{ data.exposure}}</span>
-                            <span id="bookmark-count-39"></span>
-                            개
-                            <div>글자수:{{ data.text_length }}</div>
-                            노출은 되었으나 클릭되지 않은 횟수
-                            <span id="like-count-39">{{ data.impressions_cnt }}</span>
-                            <span id="bookmark-count-39"></span>
-                            개
+                            <div class="timer">누적 조회시간: {{ data.residence_time }} ms</div>
                             
-                        </div>
 
-                        <div class="comment_container">
-                            
-                            <div class="comment" id="comment-list-ajax-post37">
-                                {% for comment in comments|slice:":3" %}
-                                    {% if data == comment.post %}
-                                        <div class="comment-detail">
-                                            <div class="nick_name m_text">{{comment.author}}</div>          
-                                            : {{comment.content}}<br>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %} 
+                            <div class="comment_field" >
+                                <form action="{% url 'testproject:comment_create' data.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div>
+                                        <input type="text" placeholder="댓글달기..." name="content">
+                                    </div> 
+                                    <button type="submit" class="upload_btn m_text" style="background-color:white; border-color: white; border:0;">게시</button>
+                                </form>
                             </div>
-
-                        </div>          
-
-                        <div class="timer">누적 조회시간: {{ data.residence_time }} ms</div>
+                        </article>
                         
 
-                        <div class="comment_field" >
-                            <form action="{% url 'testproject:comment_create' data.id %}" method="POST">
-                                {% csrf_token %}
-                                <div>
-                                    <input type="text" placeholder="댓글달기..." name="content">
-                                </div> 
-                                <button type="submit" class="upload_btn m_text" style="background-color:white; border-color: white; border:0;">게시</button>
-                            </form>
-                        </div>
-                    </article>
-                    
-
-                </div>
-                <input type="hidden" id="page" value="1">
-
-                <div class="side_box">
-                    <div class="user_profile">
-                        <div class="profile_thumb">
-                            <img src="static/images/jenny.jpeg" alt="프로필사진">
-                        </div>
-                        <div class="detail">
-                            <div class="id m_text">{{ data.user }}</div>
-                            <div class="ko_name"></div>
-                        </div>
                     </div>
 
-                    <article class="story">
-                        <header class="story_header">
-                            <div>스토리</div>
-                            <div class="more">모두 보기</div>
-                        </header>
-
-                        <div class="scroll_inner">
-                            <div class="thumb_user">
-                                <div class="profile_thumb">
-                                    <img src="static/images/jenny.jpeg" alt="프로필사진">
-                                </div>
-                                <div class="detail">
-                                    <div class="id">{{ data.user }}</div>
-                                    <div class="time">1시간 전</div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
+                    
                 </div>
-            </div>
-        </section>
-        {% endfor %}
+            </section>
+        </td>
+    {% endfor %}
+        
+    </tr>
+    </table>
+    
+    
        
 
         <div class="paginator">
             {% if posts.has_previous %}
-            <div style="position: absolute; left: 80px; top: 700px;">
+            <div style="position: absolute; left: 35px; top: 750px;">
             <a href="?page={{posts.previous_page_number}}" style="text-align: center; margin-right: 1200px;"><img src="static/images/pngwing.com.png" alt="페이지네이터" width=100></a>
             </div>
             {% endif %}
             {% if posts.has_next %}
-            <div style="position: absolute; right: 80px; top: 700px;">
+            <div style="position: absolute; right: 35px; top: 750px;">
             <a href="?page={{posts.next_page_number}}"><img src="static/images/pngwing.com copy.png" alt="페이지네이터" width=100></a>
             </div>
             {% endif %}
         </div> 
+        
  
    
 
@@ -195,6 +157,16 @@
         {% comment %} <div id="post_list_ajax"></div>
         <input type="hidden" id="page" value="2"> {% endcomment %}
     </section>
+
+    
+
+
+
+
+
+
+
+
     {% if messages %} {% for message in messages %} {% if message.tags %}
     <script>
       alert("{{ message }}");

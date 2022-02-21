@@ -1,4 +1,3 @@
-from turtle import pos
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views import View
@@ -10,6 +9,7 @@ from . import serializer as post_serializer
 from rest_framework.response import Response
 from rest_framework import status
 from . import pagination as post_paginations
+from django.urls import reverse
 from scipy.stats import beta
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
@@ -38,8 +38,10 @@ def initData():
         post.save()
 
 
+
 def post_list(request):
     global cnt 
+
     global startT
     global detail_page_id
 
@@ -51,7 +53,7 @@ def post_list(request):
     comment_list=Comment.objects.all().order_by('-created_date')
 
     #유저의 로그인 여부에 따라 추천 알고리즘을 다르게 적용.
-    print("user:    " ,request.user)
+    print("user:  " ,request.user)
     #로그인이 안되었을 시 ,전체 추천
     if not request.user.is_authenticated:
 
@@ -97,8 +99,9 @@ def post_list(request):
             post.save()#특정 유저가 특정 게시물에 좋아요한 갯수.
 
 
-    paginator= Paginator(post_list, 1)
-    page_num= request.GET.get('page')   
+    paginator= Paginator(post_list, 4)
+    page_num= request.GET.get('page') 
+
     try:
         posts=paginator.get_page(page_num)
 
@@ -132,6 +135,7 @@ def post_list(request):
         detail_page_id=0
     
     print(f'function time: {time.time() - startT}ms')
+
     cnt += 1
 
     return render(request, "post_list.html",{'posts':posts, 'comments':comment_list})
@@ -156,6 +160,8 @@ def click(request, id):
         post.save()
     else:
         print('user like cnt : ',post.user_like_cnt)
+        print('user view cnt : ',post.user_views_cnt)
+        print('user_residence_time : ',post.user_residence_time)
 
         post.impressions_cnt+=1
         post.views_cnt+=1

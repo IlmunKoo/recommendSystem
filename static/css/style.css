@@ -219,8 +219,9 @@ body{
     justify-content: center;
 }
 
+
 #main_container .inner{
-    width: 935px;
+    width: 350px;
     /*height: 500px;*/
     /*background: red;*/
     position: relative;
@@ -233,10 +234,11 @@ body{
 
 
 .contents{
-    max-width: 614px;
+    max-width: 300px;
     border: 1px solid rgba(0,0,0,0.09);
     border-radius: 3px;
     margin-bottom: 60px;
+    margin-left: 30px;
     background: white;
 }
 
@@ -562,7 +564,7 @@ body{
 
     .contents_box{
         display:flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
     }
     .side_box{

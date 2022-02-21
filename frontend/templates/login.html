@@ -19,7 +19,7 @@
                     <img src="{% static 'images/tw.png' %}" alt="twitter">
                     <img src="{% static 'images/gl.png' %}" alt="google">
                 </div>
-                <form id="login" action="" class="input-group" action="{% url 'account:signup' %}" method="POST">
+                <form id="login" action="{% url 'account:login' %}" class="input-group"  method="POST">
                   {% csrf_token %}
                     <input type="email" class="input-field" placeholder="Your Email" name=email required>
                     <input type="password" class="input-field" placeholder="Enter Password" name=password required>
@@ -28,7 +28,7 @@
                 </form>
 
                 
-                <form id="register" action="" class="input-group" action="{% url 'account:signup' %}" method="POST">
+                <form id="register" action="{% url 'account:signup' %}" class="input-group"  method="POST">
                   {% csrf_token %}
                     <input type="email" class="input-field" placeholder="Your Email" name=email required>
                     <input type="password" class="input-field" placeholder="Enter Password" name=password required>
