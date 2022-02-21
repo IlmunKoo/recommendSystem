@@ -13,7 +13,7 @@ from django.urls import reverse
 from scipy.stats import beta
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
-
+from random import randrange
 from testproject.ai.algorithm import beginRecommend
 
 import math
@@ -66,7 +66,6 @@ def post_list(request):
     #로그인이 되었을 시, 개별 유저에 특화하여 추천.
     else:
         #개별 유저들의 추천 알고리즘
-        #post_list = TestData.objects.prefetch_related("user").order_by("-importance").all()
 
         posts= TestData.objects.all()#전체 게시글들
         user_likes= Like.objects.filter(user=request.user)#유저가 좋아요 누른 전체 정보들
@@ -79,6 +78,8 @@ def post_list(request):
             post.importance = score
             post.save()
 
+        post_list = TestData.objects.prefetch_related("user").order_by("-importance").all()
+
         # 추천리스트 정리 
         recommendList = []
         for i in range(len(svdRecList)):
@@ -88,8 +89,9 @@ def post_list(request):
 
         #추천 리스트에 속한 게시물들은 상위권으로 
         for i in range(len(recommendList)):
-            post = TestData.objects.get(id = recommendList[i])
-            post.importance = 1- (0.000001*i)
+            recPost = TestData.objects.get(id = recommendList[i])
+            bImportance = post_list[i*randrange(2,6)].importance
+            post.importance = bImportance - (0.000001)
             post.save()
 
 
