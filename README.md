@@ -1,7 +1,7 @@
 # Recommendation System
 ## Multi-Armed Bandits using Thompson sampling
 
-dir: backend/testproject/ai/algorithm.py, backend/testproject/views.py
+algorithm dir: backend/testproject/ai/algorithm.py, backend/testproject/ai/spotlightRecsys.py, backend/testproject/views.py(76 line, Thompson Sampling)
 
 Collaborative Filtering using spotlight
 
