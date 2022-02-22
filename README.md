@@ -1,4 +1,4 @@
-# recommendSystem
+# Recommendation System
 ## Multi-Armed Bandits using Thompson sampling
 
 dir: backend/testproject/ai/algorithm.py, backend/testproject/views.py
