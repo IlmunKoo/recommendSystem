@@ -1,5 +1,5 @@
 # recommendSystem
-##Multi-Armed Bandits using Thompson sampling
+#Multi-Armed Bandits using Thompson sampling
 
 Collaborative Filtering using spotlight
 
